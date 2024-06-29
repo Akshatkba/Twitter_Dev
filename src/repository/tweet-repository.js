@@ -23,7 +23,17 @@ class TweetRepository {
 
     async getWithComment (id) {
         try {
-            const tweet = await Tweet.findById(id).populate({path: 'comments'});
+// use of lean() function: docs returned from queries with lean optionn enabled are plain Js objects, not mongoose.
+            const tweet = await Tweet.findById(id).populate({path: 'comments'}).lean();
+            return tweet;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async getAll(offset, limit) {
+        try {
+            const tweet = await Tweet.find().limit(limit).skip(offset);
             return tweet;
         } catch (error) {
             console.log(error);
